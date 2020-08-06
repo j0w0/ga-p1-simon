@@ -8,7 +8,9 @@ Technologies used include JavaScript, HTML, CSS.
 
 [Play the demo and test your memory.](#)
 
-## Pseudocode
+## Planning & Pseudocode
+
+<img src='https://github.com/j0w00/ga-p1-simon/blob/master/docs/rough-wireframe.jpeg' width='600'>
 
 1. Define constant of BUTTONS as an object with a property for each button (0-3).
     - '0': 'green' ... '3': 'green'
