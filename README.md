@@ -24,7 +24,7 @@ Simon is a game of memory that increases in difficulty each round. Replicate the
 
 ## Planning & Pseudocode
 
-<img src='https://github.com/j0w00/ga-p1-simon/blob/master/docs/simon-wireframe.jpeg' width='900'>
+<img src='https://github.com/j0w00/ga-p1-simon/blob/master/docs/simon-wireframe.png' width='900'>
 
 - Define constant of BUTTONS as an object with a property for each button (0-3).
     - '0': 'green' ... '3': 'green'
