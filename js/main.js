@@ -3,16 +3,10 @@ https://git.generalassemb.ly/SEI-CC/SEI-CC-9/blob/master/projects/project-1/proj
 */
 
 /*----- constants -----*/
-const BUTTONS = {
-    0: 'green',
-    1: 'red',
-    2: 'blue',
-    3: 'yellow',
-    off: 'white'
-}
+const BUTTONS = ['green', 'red', 'blue', 'yellow'];
 
 /*----- app's state (variables) -----*/
-let currentLevel, simonSeq, playerSeq;
+let currentLevel, simonSeq, playerSeq, inPlay;
 
 
 /*----- cached element references -----*/
@@ -41,21 +35,34 @@ function init() {
     currentLevel = 1;
     simonSeq = [];
     playerSeq = [];
+    inPlay = false;
     render();
 }
 
 function render() {
+    let levelNumber = currentLevel >= 1 && currentLevel <= 9 ? "0" + currentLevel : currentLevel;
+    levelEl.innerText = `level ${levelNumber}`;
 
-    msgEl.innerText = `Click play to begin.`;
+    btnPlayEl.style.display = simonSeq.length ? 'none' : 'display';
 
-    currentLevel = currentLevel >= 1 && currentLevel <= 9 ? "0" + currentLevel : currentLevel;
-    levelEl.innerText = `level ${currentLevel}`;
+    msgEl.innerText = getMessage();
 
+    if(inPlay) {
 
+        if(currentLevel === 1) {
+            // TODO 3,2,1 countdown so user is ready
+        }
+
+        // populate simon's sequence array
+        if(!simonSeq.length) {
+            getSimonSequence();
+            playSimonSequence();
+        }
+    }
 }
 
 function getRandomNumber() {
-    return Math.floor(Math.random() * 4);
+    return Math.floor(Math.random() * BUTTONS.length);
 }
 
 function getSimonSequence() {
@@ -66,6 +73,7 @@ function getSimonSequence() {
 }
 
 function playSimonSequence() {
+
     simonSeq.forEach((btnIdx, idx) => {
         setTimeout(function() {
 
@@ -77,24 +85,37 @@ function playSimonSequence() {
 
             // needs to be shorter than outer setTimeout
             setTimeout(function() {
-                btnLight.style.backgroundColor = BUTTONS['off'];
+                btnLight.style.backgroundColor = 'white';
             }, 500);
             
         }, 1000 * idx);
     });
+
+    setTimeout(function() {
+        msgEl.innerText = getMessage();
+    }, 1000 * simonSeq.length);
+
+
+    
+
 }
 
-function updateMessage() {
+function getMessage() {
 
+    if(!inPlay) {
+        return `Click play to begin.`;
+    }
+
+    if(!simonSeq.length) {
+        return `Simon's turn`;
+    }
+
+    return `Your turn`;
 }
 
 function startGame() {
-
-    // populate simon's sequence array
-    getSimonSequence();
-    playSimonSequence();
-
-
+    inPlay = true;
+    render();
 }
 
 
