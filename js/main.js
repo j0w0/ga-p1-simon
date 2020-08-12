@@ -3,10 +3,16 @@ https://git.generalassemb.ly/SEI-CC/SEI-CC-9/blob/master/projects/project-1/proj
 */
 
 /*----- constants -----*/
-const BUTTONS = ['green', 'red', 'blue', 'yellow'];
+const BUTTONS = [
+    { offColor: 'rgb(0 128 0 / .125)', onColor: '#008000' }, // green
+    { offColor: 'rgb(255 0 0 / .125)', onColor: '#ff0000' }, // red
+    { offColor: 'rgb(0 0 255 / .125)', onColor: '#0000ff' }, // blue
+    { offColor: 'rgb(255 255 0 / .125)', onColor: '#ffff00' } // yellow
+];
+
 
 /*----- app's state (variables) -----*/
-let currentLevel, simonSeq, playerSeq, inPlay;
+let currentLevel, simonSeq, playerSeq, inPlay, playersTurn, gameOver;
 
 
 /*----- cached element references -----*/
@@ -19,105 +25,153 @@ const btnPlayEl = document.getElementById('btn-play');
 
 /*----- event listeners -----*/
 btnPlayEl.addEventListener('click', startGame);
-
-btnLights.addEventListener('click', function(e) {
-    if(e.target.tagName !== 'BUTTON') return;
-    const btnIndex = e.target.dataset.index;
-    console.log(btnIndex);
-});
+btnLights.addEventListener('click', lightClick);
+btnLights.addEventListener('mousedown', turnLightOn);
+btnLights.addEventListener('mouseup', turnLightOff);
 
 
 /*----- functions -----*/
-
 init();
 
-function init() {
+function init(startGame = false) {
+
     currentLevel = 1;
     simonSeq = [];
     playerSeq = [];
-    inPlay = false;
+    inPlay = startGame;
+    playersTurn = false;
+    gameOver = null;
+
     render();
 }
 
 function render() {
+
     let levelNumber = currentLevel >= 1 && currentLevel <= 9 ? "0" + currentLevel : currentLevel;
     levelEl.innerText = `level ${levelNumber}`;
 
-    btnPlayEl.style.display = simonSeq.length ? 'none' : 'display';
-
     msgEl.innerText = getMessage();
+    
+    btnLightEls.forEach((btn,idx) => {
+        btn.style.backgroundColor = BUTTONS[idx].offColor;
+    });
 
-    if(inPlay) {
-
-        if(currentLevel === 1) {
-            // TODO 3,2,1 countdown so user is ready
-        }
-
-        // populate simon's sequence array
-        if(!simonSeq.length) {
-            getSimonSequence();
-            playSimonSequence();
-        }
+    if(inPlay && !playersTurn) {
+        simonSequence();
     }
+
+    btnPlayEl.innerText = gameOver ? `Replay` : `Play`;
+    btnPlayEl.style.display = inPlay ? 'none' : 'inline';
 }
 
-function getRandomNumber() {
-    return Math.floor(Math.random() * BUTTONS.length);
-}
+function simonSequence() {
 
-function getSimonSequence() {
-    simonSeq = [];
-    for(let i = 0; i < currentLevel; i++) {
-        simonSeq.push(getRandomNumber());
-    }
+    // add random number/index to simon sequence array
+    const random = Math.floor(Math.random() * BUTTONS.length);
+    simonSeq.push(random);
+
+    // delay simon sequence so player is ready
+    //const msToWait = simonSeq.length === 1 ? 3000 : 1000;
+    setTimeout(playSimonSequence, 1000);
 }
 
 function playSimonSequence() {
 
+    const msBase = 1000;
+
+    // loop through the sequence and turn on/off color backgrounds
     simonSeq.forEach((btnIdx, idx) => {
+
         setTimeout(function() {
 
-            // animate light buttons
-            const currentColor = BUTTONS[btnIdx];
             const btnLight = document.querySelector(`[data-index='${btnIdx}']`);
+            btnLight.style.backgroundColor = BUTTONS[btnIdx].onColor;
 
-            btnLight.style.backgroundColor = currentColor;
-
-            // needs to be shorter than outer setTimeout
+            // 'turn off' the light - needs to be shorter than outer setTimeout
             setTimeout(function() {
-                btnLight.style.backgroundColor = 'white';
-            }, 500);
+                btnLight.style.backgroundColor = BUTTONS[btnIdx].offColor;
+            }, msBase / 2);
             
-        }, 1000 * idx);
+        }, msBase * idx);
     });
 
+    // update message to player
     setTimeout(function() {
+        playersTurn = true;
         msgEl.innerText = getMessage();
-    }, 1000 * simonSeq.length);
+    }, msBase * simonSeq.length);
+}
 
+function startGame() {
+    init(true);
+}
 
-    
+function turnLightOn(e) {
+    changeBackgroundColor(e, 'onColor');
+}
 
+function turnLightOff(e) {
+    changeBackgroundColor(e, 'offColor');
+}
+
+function changeBackgroundColor(e, status) {
+    if(e.target.tagName !== 'BUTTON' ||
+        playerSeq.length === simonSeq.length ||
+        !playersTurn ||
+        gameOver
+    ) return;
+
+    const btnIndex = parseInt(e.target.dataset.index);
+
+    const btnLight = document.querySelector(`[data-index='${btnIndex}']`);
+    btnLight.style.backgroundColor = BUTTONS[btnIndex][status];
+}
+
+function lightClick(e) {
+
+    if(e.target.tagName !== 'BUTTON' ||
+        playerSeq.length === simonSeq.length ||
+        !playersTurn ||
+        gameOver
+    ) return;
+
+    const btnIndex = parseInt(e.target.dataset.index);
+
+    // add button index to player sequence array
+    playerSeq.push(btnIndex);
+
+    const clickCountIndex = playerSeq.length - 1;
+
+    // compare player and simon selections
+    if(btnIndex !== simonSeq[clickCountIndex]) {
+
+        gameOver = true;
+        inPlay = false;
+
+    } else if(playerSeq.length === simonSeq.length) {
+
+        currentLevel++;
+        playerSeq = [];
+        playersTurn = false;
+    }
+
+    render();
 }
 
 function getMessage() {
 
     if(!inPlay) {
+
+        if(gameOver) {
+            return `Game over!`;
+        }
+
         return `Click play to begin.`;
     }
 
-    if(!simonSeq.length) {
-        return `Simon's turn`;
+    if(playersTurn) {
+        return `Your turn...`;
     }
-
-    return `Your turn`;
+    
+    return `Simon's turn...`;
 }
-
-function startGame() {
-    inPlay = true;
-    render();
-}
-
-
-
-
