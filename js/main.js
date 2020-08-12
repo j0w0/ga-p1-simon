@@ -17,10 +17,7 @@ let currentLevel, simonSeq, playerSeq, inPlay, playersTurn, gameOver;
 
 /*----- cached element references -----*/
 const msgEl = document.querySelector('p');
-
-// const btnLightEls = document.querySelectorAll('#btn-lights button');
 const btnLightFills = document.querySelectorAll('#btn-lights-inner .btn-fill');
-
 const btnLights = document.getElementById('btn-lights-inner');
 const levelEl = document.getElementById('level');
 const btnPlayEl = document.getElementById('btn-play');
@@ -82,7 +79,7 @@ function playSimonSequence() {
 
     const msBase = 1000;
 
-    // loop through the sequence and turn on/off color backgrounds
+    // loop through the sequence and turn on/off lights
     simonSeq.forEach((btnIdx, idx) => {
 
         setTimeout(function() {
@@ -110,14 +107,14 @@ function startGame() {
 }
 
 function turnLightOn(e) {
-    changeBackgroundColor(e, 'onColor');
+    changeFillColor(e, 'onColor');
 }
 
 function turnLightOff(e) {
-    changeBackgroundColor(e, 'offColor');
+    changeFillColor(e, 'offColor');
 }
 
-function changeBackgroundColor(e, status) {
+function changeFillColor(e, status) {
 
     if(e.target.tagName !== 'path' ||
         !e.target.classList.contains('btn-fill') ||
@@ -154,14 +151,18 @@ function lightClick(e) {
         gameOver = true;
         inPlay = false;
 
+        render();
+
     } else if(playerSeq.length === simonSeq.length) {
 
         currentLevel++;
         playerSeq = [];
         playersTurn = false;
+
+        render();
     }
 
-    render();
+    
 }
 
 function getMessage() {
