@@ -17,13 +17,13 @@ let currentLevel, simonSeq, playerSeq, inPlay, playersTurn, gameOver;
 
 /*----- cached element references -----*/
 const msgEl = document.querySelector('p');
-const btnLightEls = document.querySelectorAll('#btn-lights > button');
-const btnLights = document.getElementById('btn-lights');
+
+// const btnLightEls = document.querySelectorAll('#btn-lights button');
+const btnLightFills = document.querySelectorAll('#btn-lights-inner .btn-fill');
+
+const btnLights = document.getElementById('btn-lights-inner');
 const levelEl = document.getElementById('level');
 const btnPlayEl = document.getElementById('btn-play');
-
-// const svgObj = document.getElementById('btn-top-obj').contentDocument;
-// svgObj.querySelector('.btn-fill').style.fill = 'orange';
 
 
 /*----- event listeners -----*/
@@ -55,8 +55,8 @@ function render() {
 
     msgEl.innerText = getMessage();
     
-    btnLightEls.forEach((btn,idx) => {
-        btn.style.backgroundColor = BUTTONS[idx].offColor;
+    btnLightFills.forEach((btn,idx) => {
+        btn.style.fill = BUTTONS[idx].offColor;
     });
 
     if(inPlay && !playersTurn) {
@@ -87,12 +87,12 @@ function playSimonSequence() {
 
         setTimeout(function() {
 
-            const btnLight = document.querySelector(`[data-index='${btnIdx}']`);
-            btnLight.style.backgroundColor = BUTTONS[btnIdx].onColor;
+            const btnLightFill = document.querySelector(`[data-index='${btnIdx}'] .btn-fill`);
+            btnLightFill.style.fill = BUTTONS[btnIdx].onColor;
 
             // 'turn off' the light - needs to be shorter than outer setTimeout
             setTimeout(function() {
-                btnLight.style.backgroundColor = BUTTONS[btnIdx].offColor;
+                btnLightFill.style.fill = BUTTONS[btnIdx].offColor;
             }, msBase / 2);
             
         }, msBase * idx);
@@ -118,27 +118,30 @@ function turnLightOff(e) {
 }
 
 function changeBackgroundColor(e, status) {
-    if(e.target.tagName !== 'BUTTON' ||
+
+    if(e.target.tagName !== 'path' ||
+        !e.target.classList.contains('btn-fill') ||
         playerSeq.length === simonSeq.length ||
         !playersTurn ||
         gameOver
     ) return;
 
-    const btnIndex = parseInt(e.target.dataset.index);
+    const btnIdx = parseInt(e.target.parentElement.dataset.index);
 
-    const btnLight = document.querySelector(`[data-index='${btnIndex}']`);
-    btnLight.style.backgroundColor = BUTTONS[btnIndex][status];
+    const btnLightFill = document.querySelector(`[data-index='${btnIdx}'] .btn-fill`);
+    btnLightFill.style.fill = BUTTONS[btnIdx][status];
 }
 
 function lightClick(e) {
 
-    if(e.target.tagName !== 'BUTTON' ||
+    if(e.target.tagName !== 'path' ||
+        !e.target.classList.contains('btn-fill') ||
         playerSeq.length === simonSeq.length ||
         !playersTurn ||
         gameOver
     ) return;
 
-    const btnIndex = parseInt(e.target.dataset.index);
+    const btnIndex = parseInt(e.target.parentElement.dataset.index);
 
     // add button index to player sequence array
     playerSeq.push(btnIndex);
