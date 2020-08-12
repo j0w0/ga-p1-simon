@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,600;1,300&display=swap');
+
 * {
     box-sizing: border-box;
 }
@@ -6,6 +8,25 @@ body {
     text-align: center;
     background-image: url('https://www.transparenttextures.com/patterns/worn-dots.png');
     background-position: center;
+    font-family: 'IBM Plex Mono', Helvetica, sans-serif;
+    padding: 0 10px;
+}
+
+button {
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: 1px solid rgb(0 0 0 / .5);
+    background: white;
+}
+
+p {
+    font-weight: 300;
+    font-style: italic;
+}
+
+#btn-play {
+    box-shadow: 0px 6px 0;
+    margin-bottom: 25px;
 }
 
 #btn-lights {
@@ -20,7 +41,7 @@ body {
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    max-width: 600px;
+    max-width: 500px;
     margin: auto;
 }
 

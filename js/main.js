@@ -60,7 +60,7 @@ function render() {
         simonSequence();
     }
 
-    btnPlayEl.innerText = gameOver ? `Replay` : `Play`;
+    btnPlayEl.innerText = gameOver ? `replay` : `play`;
     btnPlayEl.style.display = inPlay ? 'none' : 'inline';
 }
 
@@ -170,15 +170,15 @@ function getMessage() {
     if(!inPlay) {
 
         if(gameOver) {
-            return `Game over!`;
+            return `game over!`;
         }
 
-        return `Click play to begin.`;
+        return `click play to begin.`;
     }
 
     if(playersTurn) {
-        return `Your turn...`;
+        return `your turn...`;
     }
     
-    return `Simon's turn...`;
+    return `simon's turn...`;
 }
