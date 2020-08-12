@@ -1,8 +1,8 @@
 # Simon
 
-Simon is a game of memory that increases in difficulty each round. Replicate the sequence to progress to the next round. Once you fail to match the sequence or time runs out, the game is over.
+Simon is a game of memory that increases in difficulty each round. Replicate the sequence to progress to the next round. Once you fail to match the sequence, the game is over.
 
-[Play demo.](#)
+[Play demo.](https://j0w00.github.io/ga-p1-simon/)
 
 ## Screenshots
 
@@ -20,7 +20,13 @@ Simon is a game of memory that increases in difficulty each round. Replicate the
 
 ## Next Steps
 
-- Planned future enhancements (icebox items).
+- Style / button color updates
+- Timer / countdown for player's turn
+- Keep 'High Score' and make persist using localStorage
+
+## Known Issues
+
+- mousedown / mouseup bug with buttons staying 'lit' if mouseup event happens off element
 
 ## Planning & Pseudocode
 
