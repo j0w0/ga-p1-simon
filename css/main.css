@@ -8,8 +8,8 @@ body {
 
 #btn-lights {
     margin-bottom: 25px;
-    transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
+    /* transform: rotate(45deg);
+    -webkit-transform: rotate(45deg); */
 }
 
 #btn-lights > button {
