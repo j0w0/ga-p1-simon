@@ -21,6 +21,7 @@ Simon is a game of memory that increases in difficulty each round. Replicate the
 ## Next Steps
 
 - Style / button color updates
+- Animate button press
 - Timer / countdown for player's turn
 - Keep 'High Score' and make persist using localStorage
 
