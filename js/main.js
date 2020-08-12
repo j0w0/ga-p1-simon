@@ -21,6 +21,7 @@ const btnLightEls = document.querySelectorAll('#btn-lights > button');
 const btnLights = document.getElementById('btn-lights');
 const levelEl = document.getElementById('level');
 const btnPlayEl = document.getElementById('btn-play');
+const btnFaceEls = document.querySelectorAll('path.btn-fill');
 
 
 /*----- event listeners -----*/
