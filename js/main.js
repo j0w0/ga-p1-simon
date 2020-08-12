@@ -21,7 +21,9 @@ const btnLightEls = document.querySelectorAll('#btn-lights > button');
 const btnLights = document.getElementById('btn-lights');
 const levelEl = document.getElementById('level');
 const btnPlayEl = document.getElementById('btn-play');
-const btnFaceEls = document.querySelectorAll('path.btn-fill');
+
+// const svgObj = document.getElementById('btn-top-obj').contentDocument;
+// svgObj.querySelector('.btn-fill').style.fill = 'orange';
 
 
 /*----- event listeners -----*/
