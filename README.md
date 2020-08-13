@@ -13,6 +13,7 @@ Simon is a game of memory that increases in difficulty each round. Replicate the
 - JavaScript
 - HTML
 - CSS
+- SVG Images/Paths
 
 ## Getting Started
 
@@ -22,6 +23,7 @@ Simon is a game of memory that increases in difficulty each round. Replicate the
 
 - Style / button color updates
 - Animate button press
+- Add sound fx
 - Timer / countdown for player's turn
 - Keep 'High Score' and make persist using localStorage
 
