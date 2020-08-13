@@ -28,6 +28,7 @@ btnPlayEl.addEventListener('click', startGame);
 btnLights.addEventListener('click', lightClick);
 btnLights.addEventListener('mousedown', turnLightOn);
 btnLights.addEventListener('mouseup', turnLightOff);
+btnLights.addEventListener('mouseout', turnLightOff);
 
 
 /*----- functions -----*/
@@ -48,7 +49,7 @@ function init(startGame = false) {
 function render() {
 
     let levelNumber = currentLevel >= 1 && currentLevel <= 9 ? "0" + currentLevel : currentLevel;
-    levelEl.innerText = `level ${levelNumber}`;
+    levelEl.innerHTML = `level <strong>${levelNumber}</strong>`;
 
     msgEl.innerText = getMessage();
     
@@ -61,7 +62,7 @@ function render() {
     }
 
     btnPlayEl.innerText = gameOver ? `replay` : `play`;
-    btnPlayEl.style.display = inPlay ? 'none' : 'inline';
+    btnPlayEl.style.visibility = inPlay ? 'hidden' : 'visible';
 }
 
 function simonSequence() {

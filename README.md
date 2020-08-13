@@ -21,15 +21,11 @@ Simon is a game of memory that increases in difficulty each round. Replicate the
 
 ## Next Steps
 
-- Style / button color updates
+- Update button color theme
 - Animate button press
-- Add sound fx
+- Add sound effects
 - Timer / countdown for player's turn
 - Keep 'High Score' and make persist using localStorage
-
-## Known Issues
-
-- mousedown / mouseup bug with buttons staying 'lit' if mouseup event happens off element
 
 ## Planning & Pseudocode
 
