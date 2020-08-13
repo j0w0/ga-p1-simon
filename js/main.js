@@ -162,8 +162,6 @@ function lightClick(e) {
 
         render();
     }
-
-    
 }
 
 function getMessage() {
