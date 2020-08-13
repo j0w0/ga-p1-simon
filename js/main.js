@@ -3,12 +3,7 @@ https://git.generalassemb.ly/SEI-CC/SEI-CC-9/blob/master/projects/project-1/proj
 */
 
 /*----- constants -----*/
-const BUTTONS = [
-    { offColor: 'rgb(0 128 0 / .125)', onColor: '#008000' }, // green
-    { offColor: 'rgb(255 0 0 / .125)', onColor: '#ff0000' }, // red
-    { offColor: 'rgb(0 0 255 / .125)', onColor: '#0000ff' }, // blue
-    { offColor: 'rgb(255 255 0 / .125)', onColor: '#ffff00' } // yellow
-];
+// linked js file with BUTTONS array constant in html head
 
 
 /*----- app's state (variables) -----*/
@@ -17,7 +12,6 @@ let currentLevel, simonSeq, playerSeq, inPlay, playersTurn, gameOver;
 
 /*----- cached element references -----*/
 const msgEl = document.querySelector('p');
-const btnLightFills = document.querySelectorAll('#btn-lights-inner .btn-fill');
 const btnLights = document.getElementById('btn-lights-inner');
 const levelEl = document.getElementById('level');
 const btnPlayEl = document.getElementById('btn-play');
@@ -32,8 +26,6 @@ btnLights.addEventListener('mouseout', turnLightOff);
 
 
 /*----- functions -----*/
-init();
-
 function init(startGame = false) {
 
     currentLevel = 1;
@@ -52,11 +44,24 @@ function render() {
     levelEl.innerHTML = `level <strong>${levelNumber}</strong>`;
 
     msgEl.innerText = getMessage();
-    
-    btnLightFills.forEach((btn,idx) => {
-        btn.style.fill = BUTTONS[idx].offColor;
-    });
 
+    // create buttons only on initial load
+    if(!inPlay && !gameOver) {
+        BUTTONS.forEach(btn => {
+
+            // create button element and inject with svg
+            const btnEl = document.createElement('button');
+            btnEl.innerHTML = btn.svgPaths;
+    
+            // update button face's svg fill color
+            const btnFill = btnEl.querySelector(".btn-fill");
+            btnFill.style.fill = btn.offColor;
+    
+            // append to inner container
+            btnLights.appendChild(btnEl);
+        });
+    }
+    
     if(inPlay && !playersTurn) {
         simonSequence();
     }
@@ -72,7 +77,6 @@ function simonSequence() {
     simonSeq.push(random);
 
     // delay simon sequence so player is ready
-    //const msToWait = simonSeq.length === 1 ? 3000 : 1000;
     setTimeout(playSimonSequence, 1000);
 }
 
@@ -181,3 +185,5 @@ function getMessage() {
     
     return `simon's turn...`;
 }
+
+init();

@@ -12,22 +12,16 @@ body {
     padding: 0 10px;
 }
 
-button {
-    padding: 10px 20px;
-    border-radius: 25px;
-    border: 1px solid rgb(0 0 0 / .5);
-    background: white;
-}
-
 p {
     font-weight: 300;
     font-style: italic;
 }
 
-#btn-play {
-    box-shadow: 0px 6px 0;
-    margin-bottom: 25px;
-    outline: none;
+button {
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: 1px solid rgb(0 0 0 / .5);
+    background: white;
 }
 
 #btn-lights {
@@ -86,4 +80,11 @@ button > svg {
 
 .btn-fill {
     transition: all .15s;
+    fill: white;
+}
+
+#btn-play {
+    box-shadow: 0px 6px 0;
+    margin-bottom: 25px;
+    outline: none;
 }
