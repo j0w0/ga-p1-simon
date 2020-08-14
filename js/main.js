@@ -174,8 +174,6 @@ function lightClickHandler(e) {
 
 
 
-
-
 function getMessage() {
     if(!inPlay) {
         if(gameOver) {
@@ -184,9 +182,9 @@ function getMessage() {
         return `click play to begin.`;
     }
     if(playersTurn) {
-        return `your turn.`;
+        return `your turn...`;
     }
-    return `simon's turn.`;
+    return `simon's turn...`;
 }
 
 init();
