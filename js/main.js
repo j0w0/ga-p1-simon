@@ -1,9 +1,4 @@
-/*
-https://git.generalassemb.ly/SEI-CC/SEI-CC-9/blob/master/projects/project-1/project-1-requirements.md
-*/
-
-/*----- constants -----*/
-// linked js file with BUTTONS array constant in html head
+// https://git.generalassemb.ly/SEI-CC/SEI-CC-9/blob/master/projects/project-1/project-1-requirements.md
 
 /*----- app's state (variables) -----*/
 let currentLevel, simonSeq, playerSeq, inPlay, playersTurn, gameOver;
@@ -81,8 +76,8 @@ function simonSequence() {
 }
 
 function playSimonSequence() {
-    // set base ms of 1000 (1 second)
-    const msBase = 1000;
+    // set base ms for timing
+    const msBase = 500;
 
     // loop through simon's sequence and turn on/off lights
     simonSeq.forEach((btnIdx, idx) => {
@@ -105,18 +100,25 @@ function playSimonSequence() {
 }
 
 function startGame() {
+    // puts game into play
     init(true);
 }
 
 function turnLightOnHandler(e) {
+    // get button index
     const btnIdx = getBtnIndex(e);
+    // return if index doesn't exist on element
     if(btnIdx === undefined) return;
+    // change button face's fill color
     changeFillColor(btnIdx, 'onColor');
 }
 
 function turnLightOffHandler(e) {
+    // get button index
     const btnIdx = getBtnIndex(e);
+    // return if index doesn't exist on element
     if(btnIdx === undefined) return;
+    // change button face's fill color
     changeFillColor(btnIdx, 'offColor');
 }
 
@@ -152,38 +154,28 @@ function lightClickHandler(e) {
     // get index of element that was just added
     const clickCountIndex = playerSeq.length - 1;
 
-    // compare player and simon selections
+    // compare player selection to element in simon sequence
     if(btnIdx !== simonSeq[clickCountIndex]) {
-
+        // does not match, so game is over
         gameOver = true;
         inPlay = false;
-
-        render();
-    }
-    
-    if(playerSeq.length === simonSeq.length) {
-
+    } else if(playerSeq.length === simonSeq.length) {
+        // move to next level
         currentLevel++;
         playerSeq = [];
         playersTurn = false;
-
-        render();
     }
+
+    // re-render dom if game is over or after player's turn
+    if(gameOver || !playersTurn) render();
 }
-
-
-
 
 function getMessage() {
     if(!inPlay) {
-        if(gameOver) {
-            return `game over!`;
-        }
-        return `click play to begin.`;
+        if(gameOver) return `game over!`;
+        return `click play to begin`;
     }
-    if(playersTurn) {
-        return `your turn...`;
-    }
+    if(playersTurn) return `your turn...`;
     return `simon's turn...`;
 }
 
