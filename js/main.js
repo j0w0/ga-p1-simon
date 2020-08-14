@@ -5,10 +5,8 @@ https://git.generalassemb.ly/SEI-CC/SEI-CC-9/blob/master/projects/project-1/proj
 /*----- constants -----*/
 // linked js file with BUTTONS array constant in html head
 
-
 /*----- app's state (variables) -----*/
 let currentLevel, simonSeq, playerSeq, inPlay, playersTurn, gameOver;
-
 
 /*----- cached element references -----*/
 const msgEl = document.querySelector('p');
@@ -16,18 +14,16 @@ const btnLights = document.getElementById('btn-lights-inner');
 const levelEl = document.getElementById('level');
 const btnPlayEl = document.getElementById('btn-play');
 
-
 /*----- event listeners -----*/
 btnPlayEl.addEventListener('click', startGame);
-btnLights.addEventListener('click', lightClick);
-btnLights.addEventListener('mousedown', turnLightOn);
-btnLights.addEventListener('mouseup', turnLightOff);
-btnLights.addEventListener('mouseout', turnLightOff);
-
+btnLights.addEventListener('click', lightClickHandler);
+btnLights.addEventListener('mousedown', turnLightOnHandler);
+btnLights.addEventListener('mouseup', turnLightOffHandler);
+btnLights.addEventListener('mouseout', turnLightOffHandler);
 
 /*----- functions -----*/
 function init(startGame = false) {
-
+    // initialize/reset game state
     currentLevel = 1;
     simonSeq = [];
     playerSeq = [];
@@ -35,45 +31,49 @@ function init(startGame = false) {
     playersTurn = false;
     gameOver = null;
 
+    // render view to dom
     render();
 }
 
 function render() {
-
+    // update and display current level
     let levelNumber = currentLevel >= 1 && currentLevel <= 9 ? "0" + currentLevel : currentLevel;
     levelEl.innerHTML = `level <strong>${levelNumber}</strong>`;
 
+    // get and display message/feedback to player
     msgEl.innerText = getMessage();
 
     // create buttons only on initial load
     if(!inPlay && !gameOver) {
         BUTTONS.forEach(btn => {
-
             // create button element and inject with svg
             const btnEl = document.createElement('button');
             btnEl.innerHTML = btn.svgPaths;
-    
+
             // update button face's svg fill color
             const btnFill = btnEl.querySelector(".btn-fill");
             btnFill.style.fill = btn.offColor;
-    
+
             // append to inner container
-            btnLights.appendChild(btnEl);
+            btnLights.append(btnEl);
         });
     }
-    
+
+    // only play simon's sequence when in play and not player's turn
     if(inPlay && !playersTurn) {
         simonSequence();
     }
 
+    // update and show/hide play button
     btnPlayEl.innerText = gameOver ? `replay` : `play`;
     btnPlayEl.style.visibility = inPlay ? 'hidden' : 'visible';
 }
 
 function simonSequence() {
+    // get random numbers in range of button indices
+    const random = Math.floor(Math.random() * BUTTONS.length);
 
     // add random number/index to simon sequence array
-    const random = Math.floor(Math.random() * BUTTONS.length);
     simonSeq.push(random);
 
     // delay simon sequence so player is ready
@@ -81,22 +81,19 @@ function simonSequence() {
 }
 
 function playSimonSequence() {
-
+    // set base ms of 1000 (1 second)
     const msBase = 1000;
 
-    // loop through the sequence and turn on/off lights
+    // loop through simon's sequence and turn on/off lights
     simonSeq.forEach((btnIdx, idx) => {
-
         setTimeout(function() {
+            // 'turn on' light
+            changeFillColor(btnIdx, 'onColor');
 
-            const btnLightFill = document.querySelector(`[data-index='${btnIdx}'] .btn-fill`);
-            btnLightFill.style.fill = BUTTONS[btnIdx].onColor;
-
-            // 'turn off' the light - needs to be shorter than outer setTimeout
+            // 'turn off' the light
             setTimeout(function() {
-                btnLightFill.style.fill = BUTTONS[btnIdx].offColor;
+                changeFillColor(btnIdx, 'offColor');
             }, msBase / 2);
-            
         }, msBase * idx);
     });
 
@@ -111,16 +108,20 @@ function startGame() {
     init(true);
 }
 
-function turnLightOn(e) {
-    changeFillColor(e, 'onColor');
+function turnLightOnHandler(e) {
+    const btnIdx = getBtnIndex(e);
+    if(btnIdx === undefined) return;
+    changeFillColor(btnIdx, 'onColor');
 }
 
-function turnLightOff(e) {
-    changeFillColor(e, 'offColor');
+function turnLightOffHandler(e) {
+    const btnIdx = getBtnIndex(e);
+    if(btnIdx === undefined) return;
+    changeFillColor(btnIdx, 'offColor');
 }
 
-function changeFillColor(e, status) {
-
+function getBtnIndex(e) {
+    // check to see if button/svg event is valid
     if(e.target.tagName !== 'path' ||
         !e.target.classList.contains('btn-fill') ||
         playerSeq.length === simonSeq.length ||
@@ -128,37 +129,39 @@ function changeFillColor(e, status) {
         gameOver
     ) return;
 
-    const btnIdx = parseInt(e.target.parentElement.dataset.index);
+    // return button/svg index
+    return parseInt(e.target.parentElement.dataset.index);
+}
 
+function changeFillColor(btnIdx, lightStatus) {
+    // change button's face fill color
     const btnLightFill = document.querySelector(`[data-index='${btnIdx}'] .btn-fill`);
-    btnLightFill.style.fill = BUTTONS[btnIdx][status];
+    btnLightFill.style.fill = BUTTONS[btnIdx][lightStatus];
 }
 
-function lightClick(e) {
+function lightClickHandler(e) {
+    // get button's index
+    const btnIdx = getBtnIndex(e);
 
-    if(e.target.tagName !== 'path' ||
-        !e.target.classList.contains('btn-fill') ||
-        playerSeq.length === simonSeq.length ||
-        !playersTurn ||
-        gameOver
-    ) return;
-
-    const btnIndex = parseInt(e.target.parentElement.dataset.index);
+    // return if there's no index on target
+    if(btnIdx === undefined) return;
 
     // add button index to player sequence array
-    playerSeq.push(btnIndex);
+    playerSeq.push(btnIdx);
 
+    // get index of element that was just added
     const clickCountIndex = playerSeq.length - 1;
 
     // compare player and simon selections
-    if(btnIndex !== simonSeq[clickCountIndex]) {
+    if(btnIdx !== simonSeq[clickCountIndex]) {
 
         gameOver = true;
         inPlay = false;
 
         render();
-
-    } else if(playerSeq.length === simonSeq.length) {
+    }
+    
+    if(playerSeq.length === simonSeq.length) {
 
         currentLevel++;
         playerSeq = [];
@@ -168,22 +171,22 @@ function lightClick(e) {
     }
 }
 
+
+
+
+
+
 function getMessage() {
-
     if(!inPlay) {
-
         if(gameOver) {
             return `game over!`;
         }
-
         return `click play to begin.`;
     }
-
     if(playersTurn) {
-        return `your turn...`;
+        return `your turn.`;
     }
-    
-    return `simon's turn...`;
+    return `simon's turn.`;
 }
 
 init();
