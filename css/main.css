@@ -9,7 +9,7 @@ body {
     background-image: url('https://www.transparenttextures.com/patterns/worn-dots.png');
     background-position: center;
     font-family: 'IBM Plex Mono', Helvetica, sans-serif;
-    padding: 0 10px;
+    padding: 0 .625rem;
 }
 
 p {
