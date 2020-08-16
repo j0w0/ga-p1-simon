@@ -22,6 +22,7 @@ button {
     border-radius: 1.5625rem;
     border: .0625rem solid rgb(0 0 0 / .5);
     background: #ffffff;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 #btn-lights {
