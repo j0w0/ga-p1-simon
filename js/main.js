@@ -15,6 +15,8 @@ btnLights.addEventListener('click', lightClickHandler);
 btnLights.addEventListener('mousedown', turnLightOnHandler);
 btnLights.addEventListener('mouseup', turnLightOffHandler);
 btnLights.addEventListener('mouseout', turnLightOffHandler);
+btnLights.addEventListener('touchstart', turnLightOnHandler);
+btnLights.addEventListener('touchend', turnLightOffHandler);
 
 /*----- functions -----*/
 function init(startGame = false) {
