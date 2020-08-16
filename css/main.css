@@ -23,6 +23,8 @@ button {
     border: .0625rem solid rgb(0 0 0 / .5);
     background: #ffffff;
     -webkit-tap-highlight-color: transparent;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
 }
 
 #btn-lights {
