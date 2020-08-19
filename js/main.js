@@ -15,6 +15,15 @@ btnLights.addEventListener('click', lightClickHandler);
 btnLights.addEventListener('mousedown', turnLightOnHandler);
 btnLights.addEventListener('mouseup', turnLightOffHandler);
 btnLights.addEventListener('mouseout', turnLightOffHandler);
+btnLights.addEventListener('touchstart', turnLightOnHandler);
+btnLights.addEventListener('touchend', turnLightOffHandler);
+
+// allow faster click on mobile devices
+if('addEventListener' in document) {
+	document.addEventListener('DOMContentLoaded', function() {
+		FastClick.attach(document.body);
+	}, false);
+}
 
 /*----- functions -----*/
 function init(startGame = false) {
