@@ -12,6 +12,7 @@ Simon is a game of memory that increases in difficulty each round. Try matching 
 - HTML
 - CSS
 - SVG Images/Paths
+- FastClick
 
 ## Getting Started
 
