@@ -4,7 +4,7 @@ Simon is a game of memory that increases in difficulty each round. Try matching 
 
 ## Screenshots
 
-<img src='docs/simon-browser.png' width='900'>
+<img src='docs/simon-browser.png' width='70%'><img src='docs/simon-iphone.png' width='25%'>
 
 ## Technologies Used
 
